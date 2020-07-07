@@ -15,12 +15,11 @@ export const convertPcmToWav = (
   bytesPerSample: number,
   samples: number[]
 ) => {
-  const fullDurationInSeconds = Math.ceil(durationInSeconds);
+  const bitsPerSample = bytesPerSample * 8;
   const sampleSize = numberOfChannels * bytesPerSample;
   const bytesPerSecond = sampleSize * sampleRate;
-  const dataSize = fullDurationInSeconds * bytesPerSecond;
+  const dataSize = durationInSeconds * bytesPerSecond;
   const fullSize = 44 + dataSize;
-  const bitsPerSample = bytesPerSample * 8;
 
   const buffer = Buffer.alloc(fullSize);
   let offset = 0;
@@ -64,26 +63,17 @@ export const convertPcmToWav = (
   buffer.writeUInt32LE(dataSize, offset);
   offset += 4;
 
-  let lastSample = 0;
-  for (let secondIndex = 0; secondIndex < fullDurationInSeconds; secondIndex++) {
-    for (let currentSecondSampleIndex = 0; currentSecondSampleIndex < sampleRate; currentSecondSampleIndex++) {
-      const x = secondIndex * sampleRate + currentSecondSampleIndex;
+  for (let secondIndex = 0; secondIndex < durationInSeconds; secondIndex++) {
+    for (let currentSecondSampleIndex = 0; currentSecondSampleIndex < sampleRate; currentSecondSampleIndex += bytesPerSample) {
+      const sampleIndex = secondIndex * sampleRate + currentSecondSampleIndex;
 
-      let value = samples[x];
-      if (typeof value === "undefined") {
-        value = lastSample;
-      } else {
-        const scaledValue = (value * 0xFF) + (0xFF / 2);
-        value = scaledValue & 0xFF;
-        lastSample = value;
-      }
+      let value = samples[sampleIndex];
+      if (typeof value === "undefined") break;
 
-      try {
-        buffer.writeUInt8(value, offset);
-      } catch (err) {
-        throw err;
-      }
+      const scaledValue = (value * 0xFF) + (0xFF / 2);
+      value = scaledValue & 0xFF;
 
+      buffer.writeUInt8(value, offset);
       offset += bytesPerSample;
     }
   }
