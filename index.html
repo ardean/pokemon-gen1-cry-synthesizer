@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pokemon Generation 1 Cry Synthesizer</title>
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+  <div class="wave-diagram-container">
+    <svg id="wave-diagram" width="32000" height="400"></svg>
+  </div>
+  <h3>Pokemon Generation 1 Cry Synthesizer</h3> <br />
+  <strong>
+    This is a fork of the
+    <a href="http://dotsarecool.com/rgme/tech/gen1cries.html" target="_black">
+      original application
+    </a>. I refactored code, created this TypeScript/Webpack project structure, fixed some small
+    bugs (e.g. diagram render) and added the wav file export feature. All credits go to the
+    <a href="https://www.youtube.com/watch?v=gDLpbFXnpeY" target="_black">
+      original developer and his project
+    </a>.
+  </strong>
+  <br />
+  <br />
+  <select id="selected-pokemon"></select> |
+  <button id="play">Play</button> |
+  <button id="download">Download</button> |
+  Type: <select id="selected-cry-type"></select> |
+  Pitch (0...255): <input style="width:50px;" id="pitch" type="number" min="0" max="255" /> |
+  Length (-128...127): <input style="width:50px;" id="length" type="number" min="-128" max="127" />
+  <br />
+  Volume <input style="width:50px;" id="volume" type="number" value="50" min="0" max="255" /> |
+  Pulse1 <input id="pulse1-enabled" type="checkbox" checked /> |
+  Pulse2 <input id="pulse2-enabled" type="checkbox" checked /> |
+  Noise <input id="noise-enabled" type="checkbox" checked />
+  <br />
+  <textarea id="pulse1cmds" cols="18" rows="10"></textarea> |
+  <textarea id="pulse2cmds" cols="18" rows="10"></textarea> |
+  <textarea id="noisecmds" cols="18" rows="10"></textarea> |
+  <textarea id="rawcmds" cols="18" rows="10" readonly></textarea>
+  <br />
+
+  <strong>Don't know what's going on here?</strong> Check out <a href="https://www.youtube.com/watch?v=gDLpbFXnpeY">the
+    video</a>!
+  <br />
+  <br />
+
+  <strong>Commands</strong>
+  <ul>
+    <li><tt><strong>duty</strong> &lt;pattern(0...255)&gt;</tt></li>
+    <li><tt><strong>note</strong> &lt;length(1...16)&gt; &lt;volume(0...15)&gt; &lt;volfade(-8...7)&gt;
+        &lt;frequency(0...2047)/value(0...255)&gt;</tt></li>
+    <li><tt><s><strong>loop</strong> <em>unsupported</em></s></tt></li>
+    <li><tt><s><strong>end</strong> <em>unsupported</em></s></tt></li>
+  </ul>
+  <strong>Notes</strong>
+  <ul>
+    <li>Synthesized at 1048576 Hz. Resampled at (depending on your browser) 48000 Hz to play in your browser. Exported
+      as PCM wav file with unsigned 8-bit samples at 1048576 Hz.</li>
+    <li>DAC is not emulated, these waveforms are strictly digital.</li>
+    <li>Because of above, very high frequency noise may sound a bit different than on a Gameboy.</li>
+    <li>Ranges specified are limits of the original game; the synthesizer will try its best with values outside the
+      ranges (raw hex command output will be incorrect).</li>
+  </ul>
+  <script src="./pokemon-gen1-cry-synthesizer.js"></script>
+</body>
+
+</html>

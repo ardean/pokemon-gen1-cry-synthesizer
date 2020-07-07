@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2020",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "experimentalDecorators": true,
+    "declaration": false,
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    "docs"
+  ]
+}
