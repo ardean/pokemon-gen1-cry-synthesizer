@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2020",
+    "target": "ES5",
+    "module": "ES2020",
     "lib": [
       "es2019",
       "dom"
@@ -14,8 +14,7 @@
     "declaration": false,
     "resolveJsonModule": true
   },
-  "exclude": [
-    "node_modules",
-    "docs"
+  "include": [
+    "src"
   ]
 }
